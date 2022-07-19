@@ -94,7 +94,7 @@ public class DeviceControlActivity extends Activity {
                 // Show all the supported services and characteristics on the user interface.
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                System.out.println(BluetoothLeService.EXTRA_DATA.getClass().getName()+"");
+                System.out.println(BluetoothLeService.EXTRA_DATA.getClass().getName() + "");
                 displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
             }
         }
@@ -132,14 +132,12 @@ public class DeviceControlActivity extends Activity {
                     }
                     return false;
                 }
-    };
+            };
 
     private void clearUI() {
         mGattServicesList.setAdapter((SimpleExpandableListAdapter) null);
         mDataField.setText(R.string.no_data);
     }
-
-
 
 
     @Override
@@ -149,16 +147,16 @@ public class DeviceControlActivity extends Activity {
 
         final Intent intent = getIntent();
 
-        button1=(Button)findViewById(R.id.button);
-        button2=(Button)findViewById(R.id.button2);
-        editText=(EditText)findViewById(R.id.editText);
+        button1 = (Button) findViewById(R.id.button);
+        button2 = (Button) findViewById(R.id.button2);
+        editText = (EditText) findViewById(R.id.editText);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mBluetoothLeService != null) {
+                if (mBluetoothLeService != null) {
                     //convert from string to hexadecimal int
-                int hex_int=(int)Long.parseLong(
-                String.format("%040x", new BigInteger(1, new StringBuilder(editText.getText().toString()).reverse().toString().getBytes(/*YOUR_CHARSET?*/))), 16);
+                    int hex_int = (int) Long.parseLong(
+                            String.format("%040x", new BigInteger(1, new StringBuilder(editText.getText().toString()).reverse().toString().getBytes(/*YOUR_CHARSET?*/))), 16);
 
 
                     mBluetoothLeService.writeCustomCharacteristic(hex_int);
@@ -171,7 +169,7 @@ public class DeviceControlActivity extends Activity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mBluetoothLeService != null) {
+                if (mBluetoothLeService != null) {
                     mBluetoothLeService.readCustomCharacteristic();
                 }
             }
@@ -180,7 +178,7 @@ public class DeviceControlActivity extends Activity {
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
-         // Sets up UI references.
+        // Sets up UI references.
 //        ((TextView) findViewById(R.id.device_address)).setText(mDeviceAddress);
         mGattServicesList = (ExpandableListView) findViewById(R.id.gatt_services_list);
         mGattServicesList.setOnChildClickListener(servicesListClickListner);
@@ -232,7 +230,7 @@ public class DeviceControlActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.menu_connect:
                 mBluetoothLeService.connect(mDeviceAddress);
                 return true;
@@ -257,7 +255,7 @@ public class DeviceControlActivity extends Activity {
 
     private void displayData(String data) {
         if (data != null) {
-            String[] parts=data.split("\n");
+            String[] parts = data.split("\n");
             System.out.println(parts[0]);
             mDataField.setText(parts[0]);
         }
@@ -280,8 +278,8 @@ public class DeviceControlActivity extends Activity {
         for (BluetoothGattService gattService : gattServices) {
             HashMap<String, String> currentServiceData = new HashMap<String, String>();
             uuid = gattService.getUuid().toString();
-            Log.v("Service",gattService.getUuid().toString()+" instance id"+ gattService.getInstanceId());
-            Log.v("Service",gattService.getUuid().toString()+" type"+ gattService.getType());
+            Log.v("Service", gattService.getUuid().toString() + " instance id" + gattService.getInstanceId());
+            Log.v("Service", gattService.getUuid().toString() + " type" + gattService.getType());
             currentServiceData.put(
                     LIST_NAME, SampleGattAttributes.lookup(uuid, unknownServiceString));
             currentServiceData.put(LIST_UUID, uuid);
@@ -300,8 +298,8 @@ public class DeviceControlActivity extends Activity {
                 HashMap<String, String> currentCharaData = new HashMap<String, String>();
                 uuid = gattCharacteristic.getUuid().toString();
 
-                Log.v("Characteristics",gattCharacteristic.getUuid().toString()+" write type"+ gattCharacteristic.getWriteType());
-                Log.v("Characteristics",gattCharacteristic.getUuid().toString()+" properties"+ gattCharacteristic.getProperties());
+                Log.v("Characteristics", gattCharacteristic.getUuid().toString() + " write type" + gattCharacteristic.getWriteType());
+                Log.v("Characteristics", gattCharacteristic.getUuid().toString() + " properties" + gattCharacteristic.getProperties());
                 currentCharaData.put(
                         LIST_NAME, SampleGattAttributes.lookup(uuid, unknownCharaString));
                 currentCharaData.put(LIST_UUID, uuid);
@@ -315,12 +313,12 @@ public class DeviceControlActivity extends Activity {
                 this,
                 gattServiceData,
                 android.R.layout.simple_expandable_list_item_2,
-                new String[] {LIST_NAME, LIST_UUID},
-                new int[] { android.R.id.text1, android.R.id.text2 },
+                new String[]{LIST_NAME, LIST_UUID},
+                new int[]{android.R.id.text1, android.R.id.text2},
                 gattCharacteristicData,
                 android.R.layout.simple_expandable_list_item_2,
-                new String[] {LIST_NAME, LIST_UUID},
-                new int[] { android.R.id.text1, android.R.id.text2 }
+                new String[]{LIST_NAME, LIST_UUID},
+                new int[]{android.R.id.text1, android.R.id.text2}
         );
         mGattServicesList.setAdapter(gattServiceAdapter);
     }

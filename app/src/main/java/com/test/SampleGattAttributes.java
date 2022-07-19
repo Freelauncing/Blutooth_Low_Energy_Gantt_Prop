@@ -1,7 +1,6 @@
 package com.test;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 /**
  * This class includes a small subset of standard GATT attributes for demonstration purposes.

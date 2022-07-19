@@ -130,7 +130,7 @@ public class BluetoothLeService extends Service {
             final byte[] data = characteristic.getValue();
             if (data != null && data.length > 0) {
                 final StringBuilder stringBuilder = new StringBuilder(data.length);
-                for(byte byteChar : data)
+                for (byte byteChar : data)
                     stringBuilder.append(String.format("%02X ", byteChar));
                 intent.putExtra(EXTRA_DATA, new String(data) + "\n" + stringBuilder.toString());
             }
@@ -189,11 +189,10 @@ public class BluetoothLeService extends Service {
      * Connects to the GATT server hosted on the Bluetooth LE device.
      *
      * @param address The device address of the destination device.
-     *
      * @return Return true if the connection is initiated successfully. The connection result
-     *         is reported asynchronously through the
-     *         {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}
-     *         callback.
+     * is reported asynchronously through the
+     * {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}
+     * callback.
      */
     public boolean connect(final String address) {
         if (mBluetoothAdapter == null || address == null) {
@@ -272,7 +271,7 @@ public class BluetoothLeService extends Service {
      * Enables or disables notification on a give characteristic.
      *
      * @param characteristic Characteristic to act on.
-     * @param enabled If true, enable notification.  False otherwise.
+     * @param enabled        If true, enable notification.  False otherwise.
      */
     public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic,
                                               boolean enabled) {
@@ -302,6 +301,7 @@ public class BluetoothLeService extends Service {
 
         return mBluetoothGatt.getServices();
     }
+
     public void readCustomCharacteristic() {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             Log.w(TAG, "BluetoothAdapter not initialized");
@@ -309,14 +309,14 @@ public class BluetoothLeService extends Service {
         }
         /*check if the service is available on the device*/
         BluetoothGattService mCustomService = mBluetoothGatt.getService(UUID.fromString("00001110-0000-1000-8000-00805f9b34fb"));
-        if(mCustomService == null){
+        if (mCustomService == null) {
             Log.w(TAG, "Custom BLE Service not found");
             Toast.makeText(this, "Custom BLE Service not found", Toast.LENGTH_SHORT).show();
             return;
         }
         /*get the read characteristic from the service*/
         BluetoothGattCharacteristic mReadCharacteristic = mCustomService.getCharacteristic(UUID.fromString("00000002-0000-1000-8000-00805f9b34fb"));
-        if(mBluetoothGatt.readCharacteristic(mReadCharacteristic) == false){
+        if (mBluetoothGatt.readCharacteristic(mReadCharacteristic) == false) {
             Log.w(TAG, "Failed to read characteristic");
             Toast.makeText(this, "Failed to read characteristic", Toast.LENGTH_SHORT).show();
         }
@@ -329,15 +329,15 @@ public class BluetoothLeService extends Service {
         }
         /*check if the service is available on the device*/
         BluetoothGattService mCustomService = mBluetoothGatt.getService(UUID.fromString("00001110-0000-1000-8000-00805f9b34fb"));
-        if(mCustomService == null){
+        if (mCustomService == null) {
             Log.w(TAG, "Custom BLE Service not found");
             Toast.makeText(this, "Custom BLE Service not found", Toast.LENGTH_SHORT).show();
             return;
         }
         /*get the read characteristic from the service*/
         BluetoothGattCharacteristic mWriteCharacteristic = mCustomService.getCharacteristic(UUID.fromString("00000001-0000-1000-8000-00805f9b34fb"));
-        mWriteCharacteristic.setValue(value, BluetoothGattCharacteristic.FORMAT_UINT32,0);
-        if(mBluetoothGatt.writeCharacteristic(mWriteCharacteristic) == false){
+        mWriteCharacteristic.setValue(value, BluetoothGattCharacteristic.FORMAT_UINT32, 0);
+        if (mBluetoothGatt.writeCharacteristic(mWriteCharacteristic) == false) {
             Toast.makeText(this, "Failed to write characteristic", Toast.LENGTH_SHORT).show();
             Log.w(TAG, "Failed to write characteristic");
         }
